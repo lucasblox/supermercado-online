@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho de Compras - SuperMercado Online</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Estilos específicos da página do carrinho */
+        .cart-page {
+            padding: 40px 0;
+            background: var(--background-color);
+            min-height: 60vh;
+        }
+        
+        .page-header {
+            background: var(--white);
+            padding: 30px 0;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .breadcrumb span {
+            color: var(--text-light);
+        }
+        
+        .page-title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+        
+        .cart-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+            align-items: start;
+        }
+        
+        .cart-items {
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        .cart-header {
+            padding: 25px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--background-color);
+        }
+        
+        .cart-header h2 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+        
+        .items-count {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        .cart-item {
+            padding: 25px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .item-details {
+            flex: 1;
+        }
+        
+        .item-name {
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+        
+        .item-description {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .item-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .item-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--background-color);
+            border-radius: 25px;
+            padding: 5px;
+        }
+        
+        .quantity-btn {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+        }
+        
+        .quantity-btn:hover {
+            background: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
+        
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .remove-item {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+        
+        .remove-item:hover {
+            color: #E64A19;
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: 60px 25px;
+        }
+        
+        .empty-cart i {
+            font-size: 64px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        
+        .empty-cart h3 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+        
+        .empty-cart p {
+            color: var(--text-light);
+            margin-bottom: 25px;
+        }
+        
+        .continue-shopping {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-block;
+        }
+        
+        .continue-shopping:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+        
+        .cart-summary {
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 25px;
+            position: sticky;
+            top: 120px;
+        }
+        
+        .summary-title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .summary-row.total {
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            margin-top: 20px;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary-color);
+        }
+        
+        .discount-code {
+            margin: 20px 0;
+        }
+        
+        .discount-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .discount-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .apply-discount {
+            background: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        
+        .apply-discount:hover {
+            background: #FF8F00;
+        }
+        
+        .checkout-btn {
+            width: 100%;
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 20px;
+        }
+        
+        .checkout-btn:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .checkout-btn:disabled {
+            background: var(--text-light);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .payment-methods {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .payment-methods p {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+        
+        .payment-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            font-size: 24px;
+            color: var(--text-light);
+        }
+        
+        .security-info {
+            background: var(--background-color);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .security-info i {
+            color: var(--primary-color);
+            margin-right: 8px;
+        }
+        
+        .security-info span {
+            font-size: 14px;
+            color: var(--text-color);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cart-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart-summary {
+                position: static;
+                order: -1;
+            }
+            
+            .cart-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .item-details {
+                text-align: center;
+            }
+            
+            .item-actions {
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .cart-item {
+                padding: 20px 15px;
+            }
+            
+            .cart-summary {
+                padding: 20px 15px;
+            }
+            
+            .discount-input {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-top">
+                <div class="contact-info">
+                    <span><i class="fas fa-phone"></i> +351 123 456 789</span>
+                    <span><i class="fas fa-envelope"></i> info@supermercado.pt</span>
+                </div>
+                <div class="user-actions">
+                    <a href="#" class="login-btn"><i class="fas fa-user"></i> Entrar</a>
+                    <a href="#" class="register-btn">Registar</a>
+                </div>
+            </div>
+            
+            <div class="header-main">
+                <div class="logo">
+                    <h1><i class="fas fa-shopping-cart"></i> SuperMercado</h1>
+                </div>
+                
+                <div class="search-bar">
+                    <input type="text" placeholder="Pesquisar produtos..." id="searchInput">
+                    <button type="button" class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="cart-info">
+                    <div class="cart-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">0</span>
+                    </div>
+                    <div class="cart-details">
+                        <span class="cart-items">0 itens</span>
+                        <span class="cart-total">€0.00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="main-nav">
+                <ul class="nav-menu">
+                    <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+                    <li class="dropdown">
+                        <a href="produtos.html"><i class="fas fa-th-large"></i> Produtos <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="produtos.html?categoria=frutas"><img src="images/icone_alimentos.png" alt=""> Frutas e Vegetais</a></li>
+                            <li><a href="produtos.html?categoria=carne">🥩 Carne e Peixe</a></li>
+                            <li><a href="produtos.html?categoria=padaria">🍞 Padaria</a></li>
+                            <li><a href="produtos.html?categoria=bebidas"><img src="images/icone_bebidas.png" alt=""> Bebidas</a></li>
+                            <li><a href="produtos.html?categoria=limpeza"><img src="images/icone_limpeza.png" alt=""> Limpeza</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="fas fa-percent"></i> Promoções</a></li>
+                    <li><a href="carrinho.html" class="active"><i class="fas fa-shopping-cart"></i> Carrinho</a></li>
+                    <li><a href="#"><i class="fas fa-phone"></i> Contacto</a></li>
+                </ul>
+                
+                <div class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">Início</a>
+                <span><i class="fas fa-chevron-right"></i></span>
+                <span>Carrinho de Compras</span>
+            </div>
+            <h1 class="page-title">Carrinho de Compras</h1>
+        </div>
+    </section>
+
+    <!-- Cart Page -->
+    <section class="cart-page">
+        <div class="container">
+            <div class="cart-container" id="cartContainer">
+                <!-- Cart Items -->
+                <div class="cart-items">
+                    <div class="cart-header">
+                        <h2>Seus Produtos</h2>
+                        <p class="items-count" id="itemsCount">0 itens no carrinho</p>
+                    </div>
+                    
+                    <div id="cartItemsList">
+                        <!-- Cart items will be loaded dynamically -->
+                        <div class="empty-cart">
+                            <i class="fas fa-shopping-cart"></i>
+                            <h3>Seu carrinho está vazio</h3>
+                            <p>Adicione produtos ao seu carrinho para continuar com a compra</p>
+                            <a href="produtos.html" class="continue-shopping">
+                                <i class="fas fa-arrow-left"></i> Continuar Comprando
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cart Summary -->
+                <div class="cart-summary">
+                    <h3 class="summary-title">Resumo do Pedido</h3>
+                    
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">€0.00</span>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <span>Entrega:</span>
+                        <span id="shipping">€3.99</span>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <span>Desconto:</span>
+                        <span id="discount">-€0.00</span>
+                    </div>
+                    
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="total">€3.99</span>
+                    </div>
+                    
+                    <div class="discount-code">
+                        <label for="discountInput">Código de Desconto:</label>
+                        <div class="discount-input">
+                            <input type="text" id="discountInput" placeholder="Digite o código">
+                            <button class="apply-discount" onclick="applyDiscount()">Aplicar</button>
+                        </div>
+                    </div>
+                    
+                    <button class="checkout-btn" id="checkoutBtn" onclick="proceedToCheckout()" disabled>
+                        <i class="fas fa-lock"></i> Finalizar Compra
+                    </button>
+                    
+                    <div class="payment-methods">
+                        <p>Métodos de pagamento aceitos:</p>
+                        <div class="payment-icons">
+                            <i class="fab fa-cc-visa"></i>
+                            <i class="fab fa-cc-mastercard"></i>
+                            <i class="fab fa-cc-paypal"></i>
+                            <i class="fab fa-cc-apple-pay"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="security-info">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Compra 100% segura e protegida</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>SuperMercado</h3>
+                    <p>A sua loja online de confiança para compras rápidas e seguras.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Categorias</h4>
+                    <ul>
+                        <li><a href="produtos.html?categoria=frutas">Frutas e Vegetais</a></li>
+                        <li><a href="produtos.html?categoria=carne">Carne e Peixe</a></li>
+                        <li><a href="produtos.html?categoria=padaria">Padaria</a></li>
+                        <li><a href="produtos.html?categoria=bebidas">Bebidas</a></li>
+                        <li><a href="produtos.html?categoria=limpeza">Limpeza</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Atendimento</h4>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Como Comprar</a></li>
+                        <li><a href="#">Política de Devolução</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Privacidade</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> +351 123 456 789</p>
+                        <p><i class="fas fa-envelope"></i> info@supermercado.pt</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Lisboa, Portugal</p>
+                        <p><i class="fas fa-clock"></i> Seg-Dom: 8h-22h</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 SuperMercado. Todos os direitos reservados.</p>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                    <i class="fab fa-cc-apple-pay"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Funções específicas da página do carrinho
+        function updateQuantity(productId, change) {
+            const cart = getCart();
+            const item = cart.find(item => item.id === productId);
+            
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    saveCart(cart);
+                    loadCartItems();
+                    updateCartSummary();
+                }
+            }
+        }
+        
+        function removeFromCart(productId) {
+            let cart = getCart();
+            cart = cart.filter(item => item.id !== productId);
+            saveCart(cart);
+            loadCartItems();
+            updateCartSummary();
+            updateCartHeader();
+        }
+        
+        function applyDiscount() {
+            const discountCode = document.getElementById('discountInput').value.trim();
+            const validCodes = {
+                'DESCONTO10': 0.10,
+                'BEMVINDO': 0.15,
+                'FRETE': 0.05
+            };
+            
+            if (validCodes[discountCode.toUpperCase()]) {
+                const discountPercent = validCodes[discountCode.toUpperCase()];
+                // Aplicar desconto
+                updateCartSummary(discountPercent);
+                alert('Código de desconto aplicado com sucesso!');
+            } else {
+                alert('Código de desconto inválido.');
+            }
+        }
+        
+        function proceedToCheckout() {
+            const cart = getCart();
+            if (cart.length === 0) {
+                alert('Seu carrinho está vazio!');
+                return;
+            }
+            
+            // Simular processo de checkout
+            alert('Redirecionando para o checkout...');
+            // Aqui seria redirecionado para a página de checkout
+        }
+        
+        function updateCartSummary(discountPercent = 0) {
+            const cart = getCart();
+            let subtotal = 0;
+            
+            cart.forEach(item => {
+                subtotal += item.price * item.quantity;
+            });
+            
+            const shipping = subtotal > 50 ? 0 : 3.99;
+            const discount = subtotal * discountPercent;
+            const total = subtotal + shipping - discount;
+            
+            document.getElementById('subtotal').textContent = `€${subtotal.toFixed(2)}`;
+            document.getElementById('shipping').textContent = subtotal > 50 ? 'Grátis' : `€${shipping.toFixed(2)}`;
+            document.getElementById('discount').textContent = `-€${discount.toFixed(2)}`;
+            document.getElementById('total').textContent = `€${total.toFixed(2)}`;
+            
+            // Habilitar/desabilitar botão de checkout
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            checkoutBtn.disabled = cart.length === 0;
+        }
+        
+        function loadCartItems() {
+            const cart = getCart();
+            const cartItemsList = document.getElementById('cartItemsList');
+            
+            if (cart.length === 0) {
+                cartItemsList.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Seu carrinho está vazio</h3>
+                        <p>Adicione produtos ao seu carrinho para continuar com a compra</p>
+                        <a href="produtos.html" class="continue-shopping">
+                            <i class="fas fa-arrow-left"></i> Continuar Comprando
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+            
+            cartItemsList.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="item-image">
+                        <img src="${item.image}" alt="${item.name}">
+                    </div>
+                    <div class="item-details">
+                        <h4 class="item-name">${item.name}</h4>
+                        <p class="item-description">${item.description || 'Produto de qualidade premium'}</p>
+                        <div class="item-price">€${item.price.toFixed(2)}</div>
+                    </div>
+                    <div class="item-actions">
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="updateQuantity('${item.id}', -1)">-</button>
+                            <input type="number" class="quantity-input" value="${item.quantity}" readonly>
+                            <button class="quantity-btn" onclick="updateQuantity('${item.id}', 1)">+</button>
+                        </div>
+                        <button class="remove-item" onclick="removeFromCart('${item.id}')">
+                            <i class="fas fa-trash"></i> Remover
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function updateCartHeader() {
+            const cart = getCart();
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('itemsCount').textContent = `${totalItems} ${totalItems === 1 ? 'item' : 'itens'} no carrinho`;
+        }
+        
+        // Carregar carrinho quando a página carrega
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCartItems();
+            updateCartSummary();
+            updateCartHeader();
+        });
+    </script>
+</body>
+</html>
+

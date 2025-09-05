@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos - SuperMercado Online</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Estilos específicos da página de produtos */
+        .products-page {
+            padding: 40px 0;
+            background: var(--background-color);
+        }
+        
+        .page-header {
+            background: var(--white);
+            padding: 30px 0;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .breadcrumb span {
+            color: var(--text-light);
+        }
+        
+        .page-title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+        
+        .products-count {
+            color: var(--text-light);
+            font-size: 16px;
+        }
+        
+        .products-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+        
+        .filters-sidebar {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 120px;
+        }
+        
+        .filter-section {
+            margin-bottom: 30px;
+        }
+        
+        .filter-title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+        
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .filter-option input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary-color);
+        }
+        
+        .filter-option label {
+            font-size: 14px;
+            color: var(--text-color);
+            cursor: pointer;
+            flex: 1;
+        }
+        
+        .price-range {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .price-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .clear-filters {
+            background: var(--accent-color);
+            color: var(--white);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: var(--transition);
+        }
+        
+        .clear-filters:hover {
+            background: #E64A19;
+        }
+        
+        .products-main {
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        .products-toolbar {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .view-options {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .view-btn {
+            background: var(--background-color);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .view-btn.active {
+            background: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
+        
+        .sort-options {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .sort-select {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 14px;
+            background: var(--white);
+        }
+        
+        .products-grid {
+            padding: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+        }
+        
+        .products-grid.list-view {
+            grid-template-columns: 1fr;
+        }
+        
+        .product-card.list-view {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .product-card.list-view .product-image {
+            width: 120px;
+            height: 120px;
+            flex-shrink: 0;
+        }
+        
+        .product-card.list-view .product-info {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .pagination {
+            padding: 25px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .pagination-btn {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--text-color);
+        }
+        
+        .pagination-btn:hover,
+        .pagination-btn.active {
+            background: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
+        
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .products-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters-sidebar {
+                position: static;
+                order: 2;
+            }
+            
+            .products-main {
+                order: 1;
+            }
+            
+            .products-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-card.list-view {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .product-card.list-view .product-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-top">
+                <div class="contact-info">
+                    <span><i class="fas fa-phone"></i> +351 123 456 789</span>
+                    <span><i class="fas fa-envelope"></i> info@supermercado.pt</span>
+                </div>
+                <div class="user-actions">
+                    <a href="#" class="login-btn"><i class="fas fa-user"></i> Entrar</a>
+                    <a href="#" class="register-btn">Registar</a>
+                </div>
+            </div>
+            
+            <div class="header-main">
+                <div class="logo">
+                    <h1><i class="fas fa-shopping-cart"></i> SuperMercado</h1>
+                </div>
+                
+                <div class="search-bar">
+                    <input type="text" placeholder="Pesquisar produtos..." id="searchInput">
+                    <button type="button" class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="cart-info">
+                    <div class="cart-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">0</span>
+                    </div>
+                    <div class="cart-details">
+                        <span class="cart-items">0 itens</span>
+                        <span class="cart-total">€0.00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="main-nav">
+                <ul class="nav-menu">
+                    <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+                    <li class="dropdown">
+                        <a href="produtos.html" class="active"><i class="fas fa-th-large"></i> Produtos <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="produtos.html?categoria=frutas"><img src="images/icone_alimentos.png" alt=""> Frutas e Vegetais</a></li>
+                            <li><a href="produtos.html?categoria=carne">🥩 Carne e Peixe</a></li>
+                            <li><a href="produtos.html?categoria=padaria">🍞 Padaria</a></li>
+                            <li><a href="produtos.html?categoria=bebidas"><img src="images/icone_bebidas.png" alt=""> Bebidas</a></li>
+                            <li><a href="produtos.html?categoria=limpeza"><img src="images/icone_limpeza.png" alt=""> Limpeza</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="fas fa-percent"></i> Promoções</a></li>
+                    <li><a href="carrinho.html"><i class="fas fa-shopping-cart"></i> Carrinho</a></li>
+                    <li><a href="#"><i class="fas fa-phone"></i> Contacto</a></li>
+                </ul>
+                
+                <div class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">Início</a>
+                <span><i class="fas fa-chevron-right"></i></span>
+                <span>Produtos</span>
+            </div>
+            <h1 class="page-title" id="pageTitle">Todos os Produtos</h1>
+            <p class="products-count" id="productsCount">Mostrando todos os produtos disponíveis</p>
+        </div>
+    </section>
+
+    <!-- Products Page -->
+    <section class="products-page">
+        <div class="container">
+            <div class="products-container">
+                <!-- Filters Sidebar -->
+                <aside class="filters-sidebar">
+                    <div class="filter-section">
+                        <h3 class="filter-title">Categorias</h3>
+                        <div class="filter-options">
+                            <div class="filter-option">
+                                <input type="checkbox" id="cat-frutas" value="frutas">
+                                <label for="cat-frutas">Frutas e Vegetais</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="cat-carne" value="carne">
+                                <label for="cat-carne">Carne e Peixe</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="cat-padaria" value="padaria">
+                                <label for="cat-padaria">Padaria</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="cat-bebidas" value="bebidas">
+                                <label for="cat-bebidas">Bebidas</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="cat-limpeza" value="limpeza">
+                                <label for="cat-limpeza">Limpeza</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="cat-bebe" value="bebe">
+                                <label for="cat-bebe">Bebé</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <h3 class="filter-title">Preço</h3>
+                        <div class="price-range">
+                            <input type="number" class="price-input" placeholder="Min" id="priceMin">
+                            <span>-</span>
+                            <input type="number" class="price-input" placeholder="Max" id="priceMax">
+                        </div>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <h3 class="filter-title">Marca</h3>
+                        <div class="filter-options">
+                            <div class="filter-option">
+                                <input type="checkbox" id="brand-continente" value="continente">
+                                <label for="brand-continente">Continente</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="brand-pingo" value="pingo">
+                                <label for="brand-pingo">Pingo Doce</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="brand-auchan" value="auchan">
+                                <label for="brand-auchan">Auchan</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="brand-lidl" value="lidl">
+                                <label for="brand-lidl">Lidl</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <h3 class="filter-title">Avaliação</h3>
+                        <div class="filter-options">
+                            <div class="filter-option">
+                                <input type="checkbox" id="rating-5" value="5">
+                                <label for="rating-5">⭐⭐⭐⭐⭐ (5 estrelas)</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="rating-4" value="4">
+                                <label for="rating-4">⭐⭐⭐⭐ (4+ estrelas)</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="rating-3" value="3">
+                                <label for="rating-3">⭐⭐⭐ (3+ estrelas)</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="clear-filters" onclick="clearAllFilters()">
+                        <i class="fas fa-times"></i> Limpar Filtros
+                    </button>
+                </aside>
+
+                <!-- Products Main Content -->
+                <main class="products-main">
+                    <div class="products-toolbar">
+                        <div class="view-options">
+                            <button class="view-btn active" onclick="setGridView()">
+                                <i class="fas fa-th"></i>
+                            </button>
+                            <button class="view-btn" onclick="setListView()">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="sort-options">
+                            <label for="sortSelect">Ordenar por:</label>
+                            <select id="sortSelect" class="sort-select" onchange="sortProducts()">
+                                <option value="relevance">Relevância</option>
+                                <option value="price-low">Preço: Menor para Maior</option>
+                                <option value="price-high">Preço: Maior para Menor</option>
+                                <option value="name">Nome A-Z</option>
+                                <option value="rating">Melhor Avaliação</option>
+                                <option value="newest">Mais Recentes</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="products-grid" id="productsGrid">
+                        <!-- Products will be loaded dynamically -->
+                    </div>
+                    
+                    <div class="pagination" id="pagination">
+                        <!-- Pagination will be generated dynamically -->
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>SuperMercado</h3>
+                    <p>A sua loja online de confiança para compras rápidas e seguras.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Categorias</h4>
+                    <ul>
+                        <li><a href="produtos.html?categoria=frutas">Frutas e Vegetais</a></li>
+                        <li><a href="produtos.html?categoria=carne">Carne e Peixe</a></li>
+                        <li><a href="produtos.html?categoria=padaria">Padaria</a></li>
+                        <li><a href="produtos.html?categoria=bebidas">Bebidas</a></li>
+                        <li><a href="produtos.html?categoria=limpeza">Limpeza</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Atendimento</h4>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Como Comprar</a></li>
+                        <li><a href="#">Política de Devolução</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Privacidade</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> +351 123 456 789</p>
+                        <p><i class="fas fa-envelope"></i> info@supermercado.pt</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Lisboa, Portugal</p>
+                        <p><i class="fas fa-clock"></i> Seg-Dom: 8h-22h</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 SuperMercado. Todos os direitos reservados.</p>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                    <i class="fab fa-cc-apple-pay"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Funções específicas da página de produtos
+        function setGridView() {
+            document.querySelector('.products-grid').classList.remove('list-view');
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.classList.remove('list-view');
+            });
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.view-btn').classList.add('active');
+        }
+        
+        function setListView() {
+            document.querySelector('.products-grid').classList.add('list-view');
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.classList.add('list-view');
+            });
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.view-btn').classList.add('active');
+        }
+        
+        function sortProducts() {
+            const sortValue = document.getElementById('sortSelect').value;
+            // Implementar lógica de ordenação
+            console.log('Ordenar por:', sortValue);
+        }
+        
+        function clearAllFilters() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            document.getElementById('priceMin').value = '';
+            document.getElementById('priceMax').value = '';
+            // Recarregar produtos
+            loadProducts();
+        }
+        
+        // Carregar produtos quando a página carrega
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+        });
+    </script>
+</body>
+</html>
+

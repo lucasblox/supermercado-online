@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperMercado Online - Compras Fáceis e Rápidas</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-top">
+                <div class="contact-info">
+                    <span><i class="fas fa-phone"></i> +351 123 456 789</span>
+                    <span><i class="fas fa-envelope"></i> info@supermercado.pt</span>
+                </div>
+                <div class="user-actions">
+                    <a href="#" class="login-btn"><i class="fas fa-user"></i> Entrar</a>
+                    <a href="#" class="register-btn">Registar</a>
+                </div>
+            </div>
+            
+            <div class="header-main">
+                <div class="logo">
+                    <h1><i class="fas fa-shopping-cart"></i> SuperMercado</h1>
+                </div>
+                
+                <div class="search-bar">
+                    <input type="text" placeholder="Pesquisar produtos..." id="searchInput">
+                    <button type="button" class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="cart-info">
+                    <div class="cart-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">0</span>
+                    </div>
+                    <div class="cart-details">
+                        <span class="cart-items">0 itens</span>
+                        <span class="cart-total">€0.00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="main-nav">
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="active"><i class="fas fa-home"></i> Início</a></li>
+                    <li class="dropdown">
+                        <a href="produtos.html"><i class="fas fa-th-large"></i> Produtos <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="produtos.html?categoria=frutas"><img src="images/icone_alimentos.png" alt=""> Frutas e Vegetais</a></li>
+                            <li><a href="produtos.html?categoria=carne">🥩 Carne e Peixe</a></li>
+                            <li><a href="produtos.html?categoria=padaria">🍞 Padaria</a></li>
+                            <li><a href="produtos.html?categoria=bebidas"><img src="images/icone_bebidas.png" alt=""> Bebidas</a></li>
+                            <li><a href="produtos.html?categoria=limpeza"><img src="images/icone_limpeza.png" alt=""> Limpeza</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="fas fa-percent"></i> Promoções</a></li>
+                    <li><a href="carrinho.html"><i class="fas fa-shopping-cart"></i> Carrinho</a></li>
+                    <li><a href="#"><i class="fas fa-phone"></i> Contacto</a></li>
+                </ul>
+                
+                <div class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero-banner">
+        <div class="banner-slide active">
+            <div class="banner-content">
+                <h2>Ofertas Especiais</h2>
+                <p>Até 50% de desconto em produtos selecionados</p>
+                <a href="produtos.html" class="cta-btn">Ver Ofertas</a>
+            </div>
+            <div class="banner-image">
+                <img src="images/banner_promocao.jpg" alt="Promoções Especiais">
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+        <div class="container">
+            <h2 class="section-title">Compre por Categoria</h2>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-icon">
+                        <img src="images/icone_alimentos.png" alt="Frutas e Vegetais">
+                    </div>
+                    <h3>Frutas e Vegetais</h3>
+                    <p>Frescos e selecionados</p>
+                    <a href="produtos.html?categoria=frutas" class="category-link">Ver Produtos</a>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-drumstick-bite"></i>
+                    </div>
+                    <h3>Carne e Peixe</h3>
+                    <p>Qualidade premium</p>
+                    <a href="produtos.html?categoria=carne" class="category-link">Ver Produtos</a>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-bread-slice"></i>
+                    </div>
+                    <h3>Padaria</h3>
+                    <p>Pão fresco diário</p>
+                    <a href="produtos.html?categoria=padaria" class="category-link">Ver Produtos</a>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <img src="images/icone_bebidas.png" alt="Bebidas">
+                    </div>
+                    <h3>Bebidas</h3>
+                    <p>Refrescantes e saborosas</p>
+                    <a href="produtos.html?categoria=bebidas" class="category-link">Ver Produtos</a>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <img src="images/icone_limpeza.png" alt="Limpeza">
+                    </div>
+                    <h3>Limpeza</h3>
+                    <p>Casa sempre limpa</p>
+                    <a href="produtos.html?categoria=limpeza" class="category-link">Ver Produtos</a>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-baby"></i>
+                    </div>
+                    <h3>Bebé</h3>
+                    <p>Cuidado especial</p>
+                    <a href="produtos.html?categoria=bebe" class="category-link">Ver Produtos</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured-products">
+        <div class="container">
+            <h2 class="section-title">Produtos em Destaque</h2>
+            <div class="products-grid" id="featuredProducts">
+                <!-- Products will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Promotions Section -->
+    <section class="promotions-section">
+        <div class="container">
+            <h2 class="section-title">Promoções da Semana</h2>
+            <div class="promotions-grid">
+                <div class="promo-card">
+                    <div class="promo-badge">-30%</div>
+                    <img src="images/frutas_vegetais.jpg" alt="Frutas Frescas">
+                    <div class="promo-content">
+                        <h3>Frutas Frescas</h3>
+                        <p>Desconto especial em todas as frutas da época</p>
+                        <a href="produtos.html?categoria=frutas" class="promo-btn">Aproveitar</a>
+                    </div>
+                </div>
+                
+                <div class="promo-card">
+                    <div class="promo-badge">-25%</div>
+                    <img src="images/carne_peixe.jpg" alt="Carnes Premium">
+                    <div class="promo-content">
+                        <h3>Carnes Premium</h3>
+                        <p>Qualidade superior com preços especiais</p>
+                        <a href="produtos.html?categoria=carne" class="promo-btn">Aproveitar</a>
+                    </div>
+                </div>
+                
+                <div class="promo-card">
+                    <div class="promo-badge">-20%</div>
+                    <img src="images/padaria.jpg" alt="Padaria Artesanal">
+                    <div class="promo-content">
+                        <h3>Padaria Artesanal</h3>
+                        <p>Pães e doces frescos todos os dias</p>
+                        <a href="produtos.html?categoria=padaria" class="promo-btn">Aproveitar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Receba as Melhores Ofertas</h2>
+                <p>Subscreva a nossa newsletter e seja o primeiro a saber das promoções exclusivas</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="O seu email" required>
+                    <button type="submit">Subscrever</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>SuperMercado</h3>
+                    <p>A sua loja online de confiança para compras rápidas e seguras.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Categorias</h4>
+                    <ul>
+                        <li><a href="produtos.html?categoria=frutas">Frutas e Vegetais</a></li>
+                        <li><a href="produtos.html?categoria=carne">Carne e Peixe</a></li>
+                        <li><a href="produtos.html?categoria=padaria">Padaria</a></li>
+                        <li><a href="produtos.html?categoria=bebidas">Bebidas</a></li>
+                        <li><a href="produtos.html?categoria=limpeza">Limpeza</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Atendimento</h4>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Como Comprar</a></li>
+                        <li><a href="#">Política de Devolução</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Privacidade</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> +351 123 456 789</p>
+                        <p><i class="fas fa-envelope"></i> info@supermercado.pt</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Lisboa, Portugal</p>
+                        <p><i class="fas fa-clock"></i> Seg-Dom: 8h-22h</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 SuperMercado. Todos os direitos reservados.</p>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                    <i class="fab fa-cc-apple-pay"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
+
